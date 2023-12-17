@@ -44,8 +44,14 @@ function metaData(selectedSample){
   // remove previous entries
   printedPairs.selectAll("p").remove()
   // add the data to the table when selected
+  
   Object.entries(metaDataInfo).forEach(([key,value])=> {
-  printedPairs.append("p").text(`${key}:${value}`)});
+  upperKey = capitalizeFirstLetter(key)
+  printedPairs.append("p").text(`${upperKey}:${value}`)});
+};
+
+function capitalizeFirstLetter(k){
+  return k.charAt(0).toUpperCase() + k.slice(1);
 };
 
 function chart(selectedSample){
