@@ -2,6 +2,10 @@
 
  This challenge was completed as part of the [Northwestern University Data Science and Visualization BootCamp](https://bootcamp.northwestern.edu/data/).
 
+## GitHub Page
+https://alyssacullinan.github.io/belly-button-challenge/
+
+
 ## Objective
 Create an interactive dashboard which shows belly-button data charted. 
 
