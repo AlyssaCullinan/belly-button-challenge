@@ -1,12 +1,8 @@
 // initialize variables
 let data1;
-let sample_valuess = [];
-let otu_idss = [];
-let otu_labelss = [];
 let dropdown = d3.select("#selDataset");
 let sampleNames;
-// let selectedSample = dropdown.property("value");
-
+let metaDataInfo;
 
 // create a variable for the URL
 const url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
@@ -19,7 +15,8 @@ d3.json(url).then((data) => {
 // create a for loop to add the sample data names to the dropdown list options
   for (let i = 0; i<sampleNames.length; i++){
   dropdown.append("option").text(sampleNames[i]).property("value",sampleNames[i])
-  }
+  };
+
   init();
 });
    
@@ -44,36 +41,51 @@ function metaData(selectedSample){
   // remove previous entries
   printedPairs.selectAll("p").remove()
   // add the data to the table when selected
-  
   Object.entries(metaDataInfo).forEach(([key,value])=> {
   upperKey = capitalizeFirstLetter(key)
   printedPairs.append("p").text(`${upperKey}:${value}`)});
 };
 
+// create a function to capitalize the first letter of the keys
 function capitalizeFirstLetter(k){
   return k.charAt(0).toUpperCase() + k.slice(1);
 };
 
 function chart(selectedSample){
   let selected = data1.samples.filter(object => object.id == selectedSample);
-  for (let i = 0; i<data1.samples.length; i++){
-    let row = data1.samples[i];
-    sample_valuess.push(row.sample_values);
-    otu_idss.push(row.otu_ids);
-    otu_labelss.push(row.otu_labels)};
+  let sample_values = selected[0].sample_values;
+  let otu_ids = selected[0].otu_ids;
+  let otu_labels = selected[0].otu_labels;
   let trace = {
-    x: sample_valuess,
-    y: otu_idss.map(id => `OTU ${id}`),
+    x: sample_values,
+    y: otu_ids.map(id => `OTU ${id}`),
     type: 'bar',
     orientation: 'h',
-    text:otu_labelss
-  }};
-
-  d3.select("#container").append("div").id("plotlyBarChart");
-
+    text:otu_labels
+  };
+  let trace2 = {
+      x: otu_ids,
+      y: sample_values,
+      text: otu_labels,
+      mode: 'markers',
+      marker: {
+        size: sample_values,
+        color: otu_ids
+      }
+      
+    };
+    
+    let layout = {
+      showlegend: false,
+      height: 800,
+      width: 800
+    };
   let data3 = [trace];
-  Plotly.newPlot("plotlyBarChart", data3);
+  let data4 = [trace2];
 
+  Plotly.newPlot("bar", data3);
+  Plotly.newPlot("bubble", data4, layout);
+  };
 
 // On change to the DOM, call optionChanged() 
 function optionChanged(){
@@ -81,7 +93,6 @@ function optionChanged(){
   metaData(s); 
   chart(s)
 };
-
 
 
 
