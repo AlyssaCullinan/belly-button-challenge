@@ -56,9 +56,11 @@ function chart(selectedSample){
   let sample_values = selected[0].sample_values;
   let otu_ids = selected[0].otu_ids;
   let otu_labels = selected[0].otu_labels;
+  let sortedOTUs = otu_ids.sort(function sortFunction(a,b){return b-a});
+  let toptenOTUs = sortedOTUs.slice(0,10);
   let trace = {
     x: sample_values,
-    y: otu_ids.map(id => `OTU ${id}`),
+    y: toptenOTUs.map(id => `OTU ${id}`),
     type: 'bar',
     orientation: 'h',
     text:otu_labels
@@ -94,26 +96,3 @@ function optionChanged(){
   chart(s)
 };
 
-
-
-// 2. Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
-// for loop to populate arrays
-// for (let i = 0; i < data1.length; i++){
-//     row = data1[i];
-//     sample_valuess.push(row.samples.sample_values);
-//     otu_idss.push(row.samples.otu_ids);
-//     otu_labelss.push(row.samples.otu_labels);
-// };
-// console.log("sample",sample_valuess)
-// //     * Use `sample_values` as the values for the bar chart.
-// let trace = {
-//     x: sample_valuess,
-//     y: otu_idss.map(id => `OTU ${id.otu_ids}`),
-//     type: 'bar',
-//     orientation: 'h',
-//     text:otu_labelss
-
-// };
-
-// let data = [trace];
-// Plotly.newPlot("sample-metadata", data);
